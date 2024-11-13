@@ -91,6 +91,34 @@ func (ll *LinkedList) Insert(index int, n *Node) {
 	n.Next = tempPointer        // 插入節點的下個節點
 }
 
+// PopFirst: 取出第一個節點
+func (ll *LinkedList) PopFirst() *Node {
+	// 檢查linked list是否為空
+	if ll.checkIsEmpty() {
+		fmt.Println("Linked list is empty.")
+		return nil
+	}
+
+	var firstNode *Node
+	// 檢查 linked list 是否只有一個值
+	if ll.head == ll.tail {
+		firstNode = ll.head
+		// 取出後，把節點改成預設值nil
+		ll.head = nil
+		ll.tail = nil
+
+		return firstNode
+	}
+
+	// 重新排序節點
+	tempNode := ll.head.Next // 暫存原本的第二個節點
+	firstNode = ll.head
+	ll.head = tempNode // 原本的第二個節點變成第一個節點
+
+	firstNode.Next = nil // 清空取出的節點的指向記憶體位置
+	return firstNode
+}
+
 /*
 Private methods
 */
