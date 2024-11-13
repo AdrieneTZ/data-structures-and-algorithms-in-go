@@ -55,6 +55,42 @@ func (ll *LinkedList) Prepend(n *Node) {
 	ll.head = n      // linked list的頭改為新節點
 }
 
+// Insert: 將節點插入特定位置
+// 原本: A -> C
+// 插入index 1: A -> B -> C，要更改節點A的指向
+func (ll *LinkedList) Insert(index int, n *Node) {
+	if ll.checkIsEmpty() {
+		ll.head = n
+		ll.tail = n
+		return
+	}
+
+	// 如果放入位置是linked list開頭，直接用Prepend method
+	if index == 0 {
+		ll.Prepend(n)
+		return
+	}
+
+	// 找到要插入的位置的前一個節點
+	// current: 要插入的位置的前一個節點
+	current := ll.head
+	for i := 0; i < index-1; i++ {
+		// 如果指定的index超過linked list長度，直接把新節點放到最後
+		// 判斷超出範圍的方式：Next是nil，代表沒有指向下一個節點的記憶體位置
+		if current.Next == nil {
+			ll.Append(n)
+			return
+		}
+
+		current = current.Next
+	}
+
+	// 插入新節點在指定位置，重新安排指向的節點的記憶體位置
+	tempPointer := current.Next // 暫時存放新節點要指向的下一個節點的記憶體位置
+	current.Next = n            // 插入節點的前一個節點指向插入的節點
+	n.Next = tempPointer        // 插入節點的下個節點
+}
+
 /*
 Private methods
 */
